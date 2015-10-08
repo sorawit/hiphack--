@@ -25,4 +25,5 @@ Vagrant.configure(2) do |config|
   SHELL
 
   config.vm.provision "shell", path: "./hiphackio/bin/setup.sh"
+  config.vm.provision "shell", path: "./hiphooker/bin/setup.sh"
 end

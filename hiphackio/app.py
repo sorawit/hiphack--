@@ -3,10 +3,15 @@ import tornado.web
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write("Hello, world\n")
+        self.write("Welcome man!\n")
+
+class MainHandler2(tornado.web.RequestHandler):
+    def get(self):
+        self.write("Hello, world!\n")
 
 application = tornado.web.Application([
-    (r"/", MainHandler),
+    (r"/api", MainHandler),
+    (r"/", MainHandler2),
 ], debug=True)
 
 if __name__ == "__main__":

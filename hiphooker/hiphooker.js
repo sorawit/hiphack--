@@ -6,7 +6,7 @@ const io     = require('socket.io')(server);
 server.listen(8001);
 
 const buffer = require('stream-buffers');
-const docker = require('dockerode')({ socketPath: '/var/run/docker.sock', timeout: 3000 });
+const docker = require('dockerode')({ socketPath: '/var/run/docker.sock', timeout: 5000 });
 const util   = require('util');
 
 const compilers = {
