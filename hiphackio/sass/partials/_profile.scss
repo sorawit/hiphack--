@@ -1,0 +1,116 @@
+.page-container.profile {
+  .candidate-profile {
+    padding-top: 15px;
+
+    .jumbo {
+      width: 100%;
+      background: $cl-jumbo-background;
+      border-radius: 3px;
+      color: $cl-jumbo-font;
+
+      .upper {
+        padding: 40px;
+        border-bottom: solid 1px adjust-lightness($cl-jumbo-background, -5);
+
+        .name-position-wrapper {
+          float: left;
+          .name {
+            font-size: 36px;
+            font-weight: 500;
+          }
+          .position {
+            font-size: 26px;
+            margin-top: 5px;
+          }
+        }
+
+        .status-wrapper {
+          font-weight: 500;
+          font-size: 20px;
+          float: right;
+          margin-top: 25px;
+          .status {
+            padding: 2px 20px;
+            margin-left: 15px;
+            border-radius: 5px;
+            border: $border-2;
+          }
+        }
+      }
+
+      .lower {
+        padding: 12px 40px;
+        .recruiter-wrapper {
+          padding: 7px 25px;
+          float: left;
+          border-radius: 3px;
+          background: adjust-lightness($cl-jumbo-background, -5);
+          color: adjust-lightness($cl-jumbo-font, -20);
+          .recruiter {
+            margin-left: 10px;
+            color: $cl-jumbo-font;
+          }
+        }
+        .email {
+          padding: 7px 0;
+          margin-left: 30px;
+          float: left;
+          i {
+            float: left;
+            font-size: 1.4em;
+            margin-right: 7px;
+            margin-top: -4px;
+          }
+        }
+      }
+
+    }
+
+    .details {
+      padding-top: 25px;
+      @include display-flex;
+      @include flex-direction(row);
+
+      .tab-selector {
+        @include flex(initial);
+        width: 200px;
+
+        ul {
+          li {
+            border-top: $border;
+            padding: 18px 20px;
+            font-weight: 600;
+            color: $cl-highlight-font;
+            h3 {
+              color: $cl-highlight-font;
+            }
+            &.active {
+              border: $border;
+              border-radius: 5px;
+              background: $cl-grey-background;
+            }
+          }
+          .active + li {
+            border-top: 0 !important;
+          }
+        }
+
+      }
+
+      .tab-content {
+        @include flex(1);
+        height: 500px;
+        padding: 0 0 0 20px;
+        iframe {
+          width: 100%;
+          height: 100%;
+          border-radius: 5px;
+          border: $border;
+        }
+      }
+
+    }
+
+
+  }
+}

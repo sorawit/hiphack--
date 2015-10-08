@@ -1,0 +1,60 @@
+html, body {
+  height: 100%;
+}
+
+body {
+ 	background: $cl-page-background;
+	font-family: $base-font-family;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+input, textarea, button {
+  font-family: $base-font-family;
+}
+
+a, a:active, a:visited {
+  color: $cl-highlight-font;
+}
+
+a:hover {
+  color: $cl-highlight-font-active
+}
+
+.page-container {
+  position: relative;
+	color: $cl-base-font;
+}
+
+.page-clear {
+  position: relative;
+  height: 100%;
+  width: 100%;
+	background-size: cover;
+}
+
+.main-content {
+	overflow: auto;
+}
+
+.container {
+  width: 100%;
+  max-width: 1024px;
+  padding: 0 30px;
+  margin: 0 auto;
+}
+
+.fl-lt {
+  float: left;
+}
+
+.fl-rt {
+  float: right;
+}
+
+.clearfix:after {
+   content: " ";
+   display: block;
+   height: 0;
+   clear: both;
+}
