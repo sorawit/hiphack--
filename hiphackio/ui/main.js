@@ -21,8 +21,7 @@ class Page extends React.Component {
 }
 
 React.render(
-  // use history={createBrowserHistory()} in router later
-  <Router>
+  <Router history={createBrowserHistory()}>
     <Route component={Page}>
       <Route path="/" component={require('./routes/dashboard')} />
       <Route path="/candidate/:candidateId" component={require('./routes/profile')} />

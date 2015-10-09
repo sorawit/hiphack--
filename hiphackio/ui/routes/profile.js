@@ -105,7 +105,7 @@ class CandidateProfile extends React.Component {
           university: "Purdue University",
           email: "sphusit@purdue.edu",
           gpa: '3.83/4.00',
-          resume_url: './resumes/gott.pdf'
+          resume_url: '/public/resumes/gott.pdf'
         }
       })
     }.bind(this), 500)
