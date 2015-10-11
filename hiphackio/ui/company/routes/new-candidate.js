@@ -6,7 +6,7 @@ const Menubar = require('../components/menubar')
 class NewCandidateForm extends React.Component {
   render() {
     return (
-      <div class="container">
+      <div className="container">
         <form className="simple-form">
           <h1>ข้อมูลของผู้สมัคร</h1>
           <label>
@@ -18,7 +18,7 @@ class NewCandidateForm extends React.Component {
             <input type="text" name="name" />
           </label>
           <label>
-            อีเมลล์
+            อีเมล
             <input type="email" name="name" />
           </label>
           <button type="button" className="button">

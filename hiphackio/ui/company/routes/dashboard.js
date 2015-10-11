@@ -86,7 +86,7 @@ class CandidateTable extends React.Component {
           return (
             <tr>
               <td>
-                <Link to={"/candidate/"+d.id}>
+                <Link to={"/company/candidate/"+d.id}>
                   {d.name}
                 </Link>
               </td>

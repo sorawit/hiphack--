@@ -25,7 +25,7 @@ class Navbar extends React.Component {
     return (
       <nav className="main-nav" ref="header">
         <div className="container">
-          <Link className="fl-lt logo" to="/">
+          <Link className="fl-lt logo" to="/company/dashboard">
             Hiphack
           </Link>
           <div className="fl-lt notification">

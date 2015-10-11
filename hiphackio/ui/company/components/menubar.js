@@ -44,17 +44,17 @@ class Menubar extends React.Component {
           <div className="fl-lt spacer"></div>
           <ul className="fl-lt menu">
             <li>
-              <Link to="/" className={'button invert round'+(this.props.page=='Dashboard'?' active':'')}>ผู้สมัครทั้งหมด</Link>
+              <Link to="/company/dashboard" className={'button invert round'+(this.props.page=='Dashboard'?' active':'')}>ผู้สมัครทั้งหมด</Link>
             </li>
             <li>
-              <Link to="/interviews" className="button invert round">ตารางการสัมภาษณ์</Link>
+              <Link to="/company/interviews" className="button invert round">ตารางการสัมภาษณ์</Link>
             </li>
             <li>
-              <Link to="/questions" className="button invert round">คลังโจทย์</Link>
+              <Link to="/company/questions" className="button invert round">คลังโจทย์</Link>
             </li>
           </ul>
           <div className="fl-rt">
-            <Link to="/new-candidate" className="button new-candidate">
+            <Link to="/company/new-candidate" className="button new-candidate">
               <i className="ion ion-android-person-add" /> เพิ่มผู้สมัคร
             </Link>
           </div>
