@@ -67,10 +67,6 @@ module.exports = function(grunt) {
       js_vendor: {
         files: ['../hiphackio/ui/vendor/**/*.js'],
         tasks: ['concat:js_vendor']
-      },
-      shell: {
-        files: ['../hiphackio/ui/package.json', '../hiphooker/package.json'],
-        tasks: ['shell', 'concat:js_vendor']
       }
     }
   });
@@ -79,5 +75,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-browserify');
-  grunt.registerTask('default', ['shell', 'compass', 'browserify', 'concat', 'watch']);
+  grunt.registerTask('default', ['compass', 'browserify', 'concat', 'watch']);
 };

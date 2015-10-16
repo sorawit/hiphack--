@@ -3,7 +3,6 @@
 .vagrant/
 env/
 logs/
-node_modules/
 /hiphackio/public/js/
 /hiphackio/public/css/
 *.pyc
