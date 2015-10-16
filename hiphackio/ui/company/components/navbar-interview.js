@@ -7,15 +7,19 @@ class Navbar extends React.Component {
   render() {
     return (
       <nav className="main-nav" ref="header">
-        <div className="container">
+        <div className="fullscreen-container">
           <Link className="fl-lt logo" to="/company/dashboard">
             Hiphack
           </Link>
-          <div className="fl-lt notification">
-            <i className="ion ion-android-notifications"/>
+          <div className="fl-lt participants">
+            <i className="ion ion-android-person"/>
             <span className="message">
-              การสัมภาษณ์ครั้งต่อไปใน 3 วัน
+              ในห้องตอนนี้
             </span>
+            <ul>
+              <li></li>
+              <li></li>
+            </ul>
           </div>
           <div className="fl-rt">
             <UserLinks />

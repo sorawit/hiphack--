@@ -2,6 +2,7 @@ $cl-page-background: #fff !default;
 $cl-grey-background: #fdfdfd !default;
 
 $cl-blue: #7bc1f2 !default;
+$cl-green: #7aba5a !default;
 
 $cl-border: #e7e7e7;
 $cl-border-2: #fff;
@@ -17,7 +18,7 @@ $cl-nav-font-2: #fff !default;
 
 $cl-highlight-font: #7a6e93 !default;
 $cl-highlight-font-active: adjust-lightness($cl-highlight-font, -10) !default;
-$cl-highlight-background-font: #fff !default;
+$cl-highlight-background-font: #fdfdfd !default;
 
 $cl-jumbo-background: $cl-highlight-font !default;
 $cl-jumbo-font: $cl-page-background !default;

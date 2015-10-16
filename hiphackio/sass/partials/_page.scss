@@ -9,7 +9,7 @@ body {
   letter-spacing: 0.5px;
 }
 
-input, textarea, button {
+input, textarea, button, select, option {
   font-family: $base-font-family;
 }
 
@@ -24,6 +24,14 @@ a:hover {
 .page-container {
   position: relative;
 	color: $cl-base-font;
+  position: relative;
+  z-index: 0;
+}
+
+.page-container.full {
+  height: 100%;
+  margin-top: -60px;
+  padding-top: 60px;
 }
 
 .page-clear {
@@ -42,6 +50,11 @@ a:hover {
   max-width: 1024px;
   padding: 0 30px;
   margin: 0 auto;
+}
+
+.fullscreen-container {
+  width: 100%;
+  padding: 0 20px;
 }
 
 .fl-lt {

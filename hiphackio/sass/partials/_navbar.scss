@@ -5,6 +5,8 @@ nav.main-nav {
   height: 60px;
   color: $cl-nav-font;
   background: $cl-nav-background;
+  position: relative;
+  z-index: 100;
 
   a.logo {
     height: 60px;
@@ -15,7 +17,8 @@ nav.main-nav {
     color: $cl-nav-font;
   }
 
-  .notification {
+  .notification,
+  .participants {
     height: 60px;
     line-height: 60px;
     color: $cl-nav-font-2;
