@@ -20,6 +20,12 @@ $question-background: #2e2b34;
   height: 100%;
   width: 100%;
 
+  .spacer {
+    @include flex(initial);
+    height: 15px;
+    background: $editor-background;
+  }
+
   .coding-env {
     @include flex(1);
     @include display-flex;
@@ -28,7 +34,7 @@ $question-background: #2e2b34;
 
     .editor {
       @include flex(1);
-
+      font-size: 12px;
     }
 
     .controls {

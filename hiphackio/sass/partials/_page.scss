@@ -7,13 +7,17 @@ body {
 	font-family: $base-font-family;
   font-weight: 300;
   letter-spacing: 0.5px;
+  font-size: $base-font-size;
 }
 
 input, textarea, button, select, option {
   font-family: $base-font-family;
+  font-size: $base-font-size;
 }
 
-a, a:active, a:visited {
+a:not(.button),
+a:active:not(.button),
+a:visited:not(.button) {
   color: $cl-highlight-font;
 }
 
@@ -47,7 +51,6 @@ a:hover {
 
 .container {
   width: 100%;
-  max-width: 1024px;
   padding: 0 30px;
   margin: 0 auto;
 }

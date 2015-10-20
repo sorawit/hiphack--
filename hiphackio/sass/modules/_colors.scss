@@ -1,6 +1,8 @@
 $cl-page-background: #fff !default;
 $cl-grey-background: #fdfdfd !default;
 
+$cl-accent: #dc7e7e !default;
+$cl-red: #f37a94 !default;
 $cl-blue: #7bc1f2 !default;
 $cl-green: #7aba5a !default;
 
@@ -12,18 +14,18 @@ $cl-light-font: #666 !default;
 $cl-lighter-font: #999 !default;
 $cl-lightest-font: #aaa !default;
 
-$cl-nav-background: #37353e !default;
-$cl-nav-font: #9585b8 !default;
-$cl-nav-font-2: #fff !default;
+$cl-nav-background: transparent !default;
+$cl-nav-font: $cl-lighter-font !default;
+$cl-nav-font-2: $cl-accent !default;
 
-$cl-highlight-font: #7a6e93 !default;
+$cl-highlight-font: $cl-accent !default;
 $cl-highlight-font-active: adjust-lightness($cl-highlight-font, -10) !default;
 $cl-highlight-background-font: #fdfdfd !default;
 
 $cl-jumbo-background: $cl-highlight-font !default;
 $cl-jumbo-font: $cl-page-background !default;
 
-$cl-button-active-background: #a39ab4 !default;
+$cl-button-active-background: $cl-accent !default;
 $cl-button-active-background-hover: adjust-lightness($cl-button-active-background, -10) !default;
 $cl-button-active-font: #fff !default;
 $cl-button-background: #fff !default;

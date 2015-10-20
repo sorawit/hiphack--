@@ -18,7 +18,7 @@
     margin: -35px 0 0 -35px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: #7a6e93;
+    border-top-color: $cl-accent;
     -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
 }
@@ -32,7 +32,7 @@
     bottom: 5px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: #a39ab4;
+    border-top-color: adjust-lightness($cl-accent, 10);
     -webkit-animation: spin 3s linear infinite;
     animation: spin 3s linear infinite;
 }
@@ -46,7 +46,7 @@
     bottom: 15px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: adjust-lightness(#a39ab4, -10);
+    border-top-color: adjust-lightness($cl-accent, 5);
     -webkit-animation: spin 1.5s linear infinite;
     animation: spin 1.5s linear infinite;
 }

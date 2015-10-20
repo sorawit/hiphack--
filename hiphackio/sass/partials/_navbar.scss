@@ -17,11 +17,22 @@ nav.main-nav {
     color: $cl-nav-font;
   }
 
+  .link {
+    color: $cl-nav-font;
+    margin-right: 20px;
+    font-weight: 500;
+
+    &.active {
+      color: $cl-nav-font-2;
+    }
+  }
+
   .notification,
-  .participants {
+  .participants,
+  .link {
     height: 60px;
     line-height: 60px;
-    color: $cl-nav-font-2;
+
     i {
       padding: 0 10px 0 30px;
       color: $cl-nav-font;
@@ -33,8 +44,8 @@ nav.main-nav {
   .user-links {
     height: 60px;
     line-height: 60px;
-    color: $cl-nav-font-2;
-    padding: 0 10px 0 15px;
+    padding: 0 15px;
+    float: right;
 
     i {
       padding-left: 10px;
@@ -44,7 +55,7 @@ nav.main-nav {
     }
 
     &:hover {
-      background: adjust-lightness($cl-nav-background, 5);
+      background: rgba($cl-accent, 0.05);
     }
 
     .company-logo {
