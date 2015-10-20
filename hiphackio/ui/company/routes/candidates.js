@@ -3,7 +3,7 @@ const { Link } = require('react-router')
 
 const Menubar = require('../components/menubar')
 
-class CandidateFilter extends React.Component {
+class CandidateSelectyy extends React.Component {
   getFilterMap() {
     const map = { position: {}, status: {} }
     this.props.data.map((d) => {
@@ -58,7 +58,7 @@ class CandidateFilter extends React.Component {
   }
 }
 
-class CandidateTable extends React.Component {
+class CandidateSelectxx extends React.Component {
   componentDidMount() {
     $(React.findDOMNode(this.refs.table)).DataTable({
       "language": {
@@ -118,6 +118,36 @@ class CandidateTable extends React.Component {
   }
 }
 
+class CandidateView extends React.Component {
+  render() {
+      return (
+        <div className="candidate-view">
+        </div>
+      )
+  }
+}
+
+class CandidateSelect extends React.Component {
+  sortBy() {
+
+  }
+  render() {
+      return (
+        <div className="candidate-select">
+          <div className="filter">
+            <input type="text" placeholder="ค้นด้วยชื่อ ตำแหน่ง หรือสถานะ"/>
+            <div className="sort">
+              เรียงตาม
+              <button className="button" onClick={this.sortBy.bind(this, 'name')}>สถานะ</button>
+              <button className="button" onClick={this.sortBy.bind(this, 'name')}>ตำแหน่ง</button>
+              <button className="button" onClick={this.sortBy.bind(this, 'name')}>ชื่อ</button>
+            </div>
+          </div>
+        </div>
+      )
+  }
+}
+
 class CandidateExplorer extends React.Component {
   constructor(props) {
     super(props)
@@ -125,89 +155,91 @@ class CandidateExplorer extends React.Component {
   }
   fetchCandidateData() {
     setTimeout(function(){
+      var data = [
+        {
+          id: 1,
+          name: "ศรัณยู ภูษิต",
+          position: "Swift Developer",
+          status: "รอสัมภาษณ์"
+        },
+        {
+          id: 2,
+          name: "สรวิทย์​ สุริยกาญจน์",
+          position: "Backend Engineer",
+          status: "On-site"
+        },
+        {
+          id: 3,
+          name: "กสิ ชนพิมาย",
+          position: "Frontend Engineer",
+          status: "รอการตอบรับ"
+        },
+        {
+          id: 4,
+          name: "สาวิตรี อ่ำกลาง",
+          position: "Database Engineer",
+          status: "On-site"
+        },
+        {
+          id: 5,
+          name: "มนัสนันท์ เทพสุริยะศาสตรา",
+          position: "Database Engineer",
+          status: "On-site"
+        },
+        {
+          id: 6,
+          name: "กวินพร ม้าน้ำผ่องใส",
+          position: "Android Developer",
+          status: "รอการตอบรับ"
+        },
+        {
+          id: 7,
+          name: "วิจิตร ตระการตา",
+          position: "Frontend Engineer",
+          status: "รอการตอบรับ"
+        },
+        {
+          id: 8,
+          name: "ยาวดี ศรีทนได้",
+          position: "Frontend Engineer",
+          status: "รอการตอบรับ"
+        },
+        {
+          id: 9,
+          name: "บริโภคชนา ขวัญราษฎ์",
+          position: "Android Developer",
+          status: "รอสัมภาษณ์"
+        },
+        {
+          id: 10,
+          name: "พิมพ์มาดา แสงสีทอง",
+          position: "Backend Engineer",
+          status: "รอสัมภาษณ์"
+        },
+        {
+          id: 11,
+          name: "วานิชญ์ เกษมสราญ",
+          position: "Frontend Engineer",
+          status: "รอการตอบรับ"
+        },
+        {
+          id: 12,
+          name: "น้ำหยด วงศาเทพหัสดิน",
+          position: "Swift Developer",
+          status: "รอการตอบรับ"
+        }
+      ], selectedCandidate = data[0]
+
       this.setState({
-        candidateData: [
-          {
-            id: 1,
-            name: "ศรัณยู ภูษิต",
-            position: "Swift Developer",
-            status: "รอสัมภาษณ์"
-          },
-          {
-            id: 2,
-            name: "สรวิทย์​ สุริยกาญจน์",
-            position: "Backend Engineer",
-            status: "On-site"
-          },
-          {
-            id: 3,
-            name: "กสิ ชนพิมาย",
-            position: "Frontend Engineer",
-            status: "รอการตอบรับ"
-          },
-          {
-            id: 4,
-            name: "สาวิตรี อ่ำกลาง",
-            position: "Database Engineer",
-            status: "On-site"
-          },
-          {
-            id: 5,
-            name: "มนัสนันท์ เทพสุริยะศาสตรา",
-            position: "Database Engineer",
-            status: "On-site"
-          },
-          {
-            id: 6,
-            name: "กวินพร ม้าน้ำผ่องใส",
-            position: "Android Developer",
-            status: "รอการตอบรับ"
-          },
-          {
-            id: 7,
-            name: "วิจิตร ตระการตา",
-            position: "Frontend Engineer",
-            status: "รอการตอบรับ"
-          },
-          {
-            id: 8,
-            name: "ยาวดี ศรีทนได้",
-            position: "Frontend Engineer",
-            status: "รอการตอบรับ"
-          },
-          {
-            id: 9,
-            name: "บริโภคชนา ขวัญราษฎ์",
-            position: "Android Developer",
-            status: "รอสัมภาษณ์"
-          },
-          {
-            id: 10,
-            name: "พิมพ์มาดา แสงสีทอง",
-            position: "Backend Engineer",
-            status: "รอสัมภาษณ์"
-          },
-          {
-            id: 11,
-            name: "วานิชญ์ เกษมสราญ",
-            position: "Frontend Engineer",
-            status: "รอการตอบรับ"
-          },
-          {
-            id: 12,
-            name: "น้ำหยด วงศาเทพหัสดิน",
-            position: "Swift Developer",
-            status: "รอการตอบรับ"
-          }
-        ]
+        candidateData: data,
+        selectedCandidate: selectedCandidate
       })
     }.bind(this), 500)
   }
-  getCandidateFilter() {
-    return this.refs.filter
-  }
-  getCandidateTable() {
-    return this.refs.table
+  onSelectCandidate(candidate) {
+    this.setState({
+      selectedCandidate: candidate
+    })
   }
   componentDidMount() {
     this.fetchCandidateData()
@@ -216,8 +248,8 @@ class CandidateExplorer extends React.Component {
     return (
       this.state.candidateData ?
         <div className="candidate-explorer container">
-          <CandidateFilter ref="filter" getCandidateTable={this.getCandidateTable.bind(this)} data={this.state.candidateData}/>
-          <CandidateTable ref="table" getCandidateFilter={this.getCandidateFilter.bind(this)} data={this.state.candidateData}/>
+          <CandidateView ref="view" candidate={this.state.selectedCandidate}/>
+          <CandidateSelect ref="select" data={this.state.candidateData} onSelectCandidate={this.onSelectCandidate}/>
         </div>
       :
         <div className="container">
@@ -229,15 +261,14 @@ class CandidateExplorer extends React.Component {
   }
 }
 
-class Dashboard extends React.Component {
+class Candidates extends React.Component {
   render() {
     return (
-      <div className="page-container dashboard">
-        <Menubar page="Dashboard" />
+      <div className="page-container full candidates">
         <CandidateExplorer />
       </div>
     )
   }
 }
 
-module.exports = Dashboard
+module.exports = Candidates

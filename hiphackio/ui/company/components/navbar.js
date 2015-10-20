@@ -18,6 +18,12 @@ class Navbar extends React.Component {
             </span>
           </div>
           <div className="fl-rt">
+            <Link className="link active" to="/company/candidates">
+              ผู้สมัครทั้งหมด
+            </Link>
+            <Link className="link" to="/company/candidates">
+              ตารางการสัมภาษณ์
+            </Link>
             <UserLinks />
           </div>
         </div>
