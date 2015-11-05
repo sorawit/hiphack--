@@ -120,28 +120,70 @@ class CandidateSelectxx extends React.Component {
 
 class CandidateView extends React.Component {
   render() {
-      return (
-        <div className="candidate-view">
+    return (
+      <div className="candidate-view">
+      </div>
+    )
+  }
+}
+
+class CandidateSelectItem extends React.Component {
+  render() {
+    let candidate = this.props.candidate
+    return (
+      <div className="candidate-item">
+        <div className="status">
+          { candidate.status }
         </div>
-      )
+        <div className="name">
+          { candidate.name }
+        </div>
+        <div className="position">
+          { candidate.position }
+        </div>
+      </div>
+    )
   }
 }
 
 class CandidateSelect extends React.Component {
-  sortBy() {
-
+  constructor(props) {
+    super(props)
+    this.state = {
+      sortBy: 'id',
+      filter: ''
+    }
+    this.handleSearch = this.handleSearch.bind(this)
+  }
+  filteredAndSortedCandidates() {
+    window.x = this.props.data
+    return this.props.data.slice(0).filter(
+      candidate => (candidate.name+candidate.status+candidate.position).indexOf(this.state.filter) > -1
+    ).sort( (a, b) => String(a[this.state.sortBy]).localeCompare(String(b[this.state.sortBy])) )
+  }
+  handleSearch(event) {
+    this.setState({filter: event.target.value})
   }
   render() {
+    console.log(this.filteredAndSortedCandidates())
       return (
         <div className="candidate-select">
           <div className="filter">
-            <input type="text" placeholder="ค้นด้วยชื่อ ตำแหน่ง หรือสถานะ"/>
+            <input type="text" placeholder="ค้นด้วยชื่อ ตำแหน่ง หรือสถานะ" onChange={this.handleSearch.bind(this)}/>
             <div className="sort">
               เรียงตาม
-              <button className="button" onClick={this.sortBy.bind(this, 'name')}>สถานะ</button>
-              <button className="button" onClick={this.sortBy.bind(this, 'name')}>ตำแหน่ง</button>
-              <button className="button" onClick={this.sortBy.bind(this, 'name')}>ชื่อ</button>
+              <button className="button" onClick={() => this.setState({ sortBy: 'status' })}>สถานะ</button>
+              <button className="button" onClick={() => this.setState({ sortBy: 'position' })}>ตำแหน่ง</button>
+              <button className="button" onClick={() => this.setState({ sortBy: 'name' })}>ชื่อ</button>
             </div>
+          </div>
+          <div className="search-results">
+            {
+              this.filteredAndSortedCandidates().map(
+                candidate => <CandidateSelectItem candidate={candidate}
+                                                  onClick={() => this.props.onSelectCandidate(candidate.id)}/>
+              )
+            }
           </div>
         </div>
       )
@@ -151,7 +193,11 @@ class CandidateSelect extends React.Component {
 class CandidateExplorer extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { candidateData: false }
+    this.state = {
+      data: [],
+      selectedCandidate: undefined
+    }
+    this.onSelectCandidate = this.onSelectCandidate.bind(this)
   }
   fetchCandidateData() {
     setTimeout(function(){
@@ -172,13 +218,13 @@ class CandidateExplorer extends React.Component {
           id: 3,
           name: "กสิ ชนพิมาย",
           position: "Frontend Engineer",
-          status: "รอการตอบรับ"
+          status: "รอสัมภาษณ์"
         },
         {
           id: 4,
           name: "สาวิตรี อ่ำกลาง",
           position: "Database Engineer",
-          status: "On-site"
+          status: "รอการตอบรับ"
         },
         {
           id: 5,
@@ -202,7 +248,7 @@ class CandidateExplorer extends React.Component {
           id: 8,
           name: "ยาวดี ศรีทนได้",
           position: "Frontend Engineer",
-          status: "รอการตอบรับ"
+          status: "On-site"
         },
         {
           id: 9,
@@ -214,7 +260,7 @@ class CandidateExplorer extends React.Component {
           id: 10,
           name: "พิมพ์มาดา แสงสีทอง",
           position: "Backend Engineer",
-          status: "รอสัมภาษณ์"
+          status: "รอการตอบรับ"
         },
         {
           id: 11,

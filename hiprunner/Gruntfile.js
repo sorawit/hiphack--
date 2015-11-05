@@ -57,7 +57,7 @@ module.exports = function(grunt) {
         livereload: true,
       },
       css: {
-        files: '../hiphackio/**/*.scss',
+        files: '../hiphackio/sass/**/*.scss',
         tasks: ['compass']
       },
       browserify: {

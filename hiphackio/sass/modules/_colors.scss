@@ -5,8 +5,9 @@ $cl-accent: #dc7e7e !default;
 $cl-red: #f37a94 !default;
 $cl-blue: #7bc1f2 !default;
 $cl-green: #7aba5a !default;
+$cl-grey: #e7e7e7;
 
-$cl-border: #e7e7e7;
+$cl-border: $cl-grey;
 $cl-border-2: #fff;
 
 $cl-base-font: #333 !default;
