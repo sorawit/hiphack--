@@ -1,5 +1,6 @@
 const React = require('react')
 const { Link } = require('react-router')
+const Loader = require('../components/loader')
 
 const Menubar = require('../components/menubar')
 
@@ -118,10 +119,93 @@ class CandidateSelectxx extends React.Component {
   }
 }
 
-class CandidateView extends React.Component {
+class CandidateViewTab extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      tab: this.props.initialTab
+    }
+  }
   render() {
     return (
+      <div/>
+    )
+  }
+}
+
+class CandidateViewGeneralInfo extends React.Component {
+  changeStatus() {
+
+  }
+  render() {
+    const candidate = this.props.candidate
+    const image_style = candidate && { backgroundImage: "url('"+candidate.display_image+"')" }
+    return (
+      <div className="general-info">
+        <div className="display-image" style={image_style} />
+        <div className="info">
+          <div className="name">
+            <h1>{candidate.name}</h1>
+          </div>
+          <div className="date-time">
+            <span className="date">15 ตุลาคม 2015</span>
+            <span className="time">43:50 นาที</span>
+          </div>
+          <div className="back">
+            <i className="ion ion-ios-arrow-back"></i> กลับไปยังหน้าหลัก
+          </div>
+        </div>
+        <div className="status">
+          <div>
+            <div className="label">ตำแหน่งที่สมัคร</div>
+            <div className="value">{candidate.position}</div>
+          </div>
+          <div>
+            <div className="label">สถานะ</div>
+            <div className="value">{candidate.status}</div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+class CandidateView extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      candidate: undefined
+    }
+  }
+  fetchCandidateData() {
+    this.setState({
+      candidate: {
+        id: 1,
+        name: "ศรัณยู ภูษิต",
+        position: "Swift Developer",
+        status: "รอสัมภาษณ์",
+        display_image: "https://scontent-lga3-1.xx.fbcdn.net/hphotos-xla1/v/t1.0-9/10460378_1086650394680517_6853281743052289354_n.jpg?oh=ea315d590ac5e339a241859d43b8ac87&oe=56B4C420",
+        recruiter: {
+          id: 1,
+          name: "มนีรัตน์ อู่เต่าบิน"
+        }
+      }
+    })
+  }
+  componentDidMount() {
+    this.fetchCandidateData()
+  }
+  render() {
+    let initialTab = 'overview'
+    return (
       <div className="candidate-view">
+        {
+          this.state.candidate ?
+          [ <CandidateViewGeneralInfo candidate={this.state.candidate} />,
+            <CandidateViewTab initialTab={initialTab} /> ] :
+          <Loader />
+        }
+
       </div>
     )
   }

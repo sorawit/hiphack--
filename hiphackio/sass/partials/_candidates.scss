@@ -99,6 +99,69 @@
   .candidate-view {
     @include flex(1);
     height: 100%;
+
+    padding: 0 40px 0 20px;
+
+    .general-info {
+    	@include display-flex;
+    	@include flex-direction(row);
+      border-bottom: $border;
+      padding: 20px 0;
+
+      .display-image {
+        flex: initial;
+        width: 42px;
+        height: 42px;
+        border-radius: 5px;
+        background-position: center;
+        background-size: cover;
+      }
+
+      .info {
+        flex: 1;
+        padding: 0 20px;
+
+        .name h1 {
+          font-size: 36px;
+          margin: 0 0 4px;
+          font-weight: 600;
+          color: $cl-light-font;
+        }
+
+        .date-time {
+          .date {
+
+          }
+          .time {
+            color: $cl-accent;
+            margin-left: 20px;
+          }
+        }
+
+        .back {
+          color: $cl-accent;
+          margin-top: 15px;
+        }
+      }
+
+      .status {
+        flex: initial;
+        padding-top: 5px;
+
+        > div {
+          line-height: 24px;
+        }
+
+        .label {
+          float: left;
+          width: 100px;
+          color: $cl-lighter-font;
+        }
+        .value {
+          float: left;
+        }
+      }
+    }
   }
 
 }
