@@ -1,6 +1,7 @@
 const React = require('react')
 const { Link } = require('react-router')
 const Loader = require('../components/loader')
+const Rating = require('../components/rating')
 
 const Menubar = require('../components/menubar')
 
@@ -78,7 +79,7 @@ class CandidateSelectxx extends React.Component {
     })
   }
   searchFor(keyword) {
-    $(React.findDOMNode(this)).find('.dataTables_filter input').val(keyword).trigger('keyup');
+    $(React.findDOMNode(this)).find('.dataTables_filter input').val(keyword).trigger('keyup')
   }
   getTableBody() {
     return (
@@ -119,24 +120,56 @@ class CandidateSelectxx extends React.Component {
   }
 }
 
+class CandidateViewTabOption extends React.Component {
+  onClick() {
+    this.props.onTabSelect(this.props.value)
+  }
+  render() {
+    var activeClass = this.props.value === this.props.selectedTab ? "active" : ""
+    return (
+      <li className={"tab-container "+activeClass} onClick={this.onClick.bind(this)}>
+        {this.props.display}
+      </li>
+    )
+  }
+}
+
 class CandidateViewTab extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      tab: this.props.initialTab
+      selectedTab: this.props.initialTab || 'overview'
     }
+  }
+  onTabSelect(tab) {
+    this.setState({selectedTab: tab})
+  }
+  onActionSelect() {
+
   }
   render() {
     return (
-      <div/>
+      <div className="tab-container">
+        <div className="tab-select">
+          <ul>
+            <CandidateViewTabOption value="overview"  display="ภาพรวม"           selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
+            <CandidateViewTabOption value="resume"    display="ประวัติย่อ (Resume)" selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
+            <CandidateViewTabOption value="interview" display="การสัมภาษณ์"        selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
+            <CandidateViewTabOption value="comment"   display="ความคิดเห็น"        selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
+          </ul>
+          <div className="action" onClick={this.onActionSelect.bind(this)}>
+            ดำเนินการ
+          </div>
+        </div>
+        <div className="tab">
+          {this.state.selectedTab}
+        </div>
+      </div>
     )
   }
 }
 
 class CandidateViewGeneralInfo extends React.Component {
-  changeStatus() {
-
-  }
   render() {
     const candidate = this.props.candidate
     const image_style = candidate && { backgroundImage: "url('"+candidate.display_image+"')" }
@@ -147,23 +180,20 @@ class CandidateViewGeneralInfo extends React.Component {
           <div className="name">
             <h1>{candidate.name}</h1>
           </div>
-          <div className="date-time">
-            <span className="date">15 ตุลาคม 2015</span>
-            <span className="time">43:50 นาที</span>
+          <div className="position">
+            {candidate.position}
           </div>
-          <div className="back">
-            <i className="ion ion-ios-arrow-back"></i> กลับไปยังหน้าหลัก
-          </div>
-        </div>
-        <div className="status">
-          <div>
-            <div className="label">ตำแหน่งที่สมัคร</div>
-            <div className="value">{candidate.position}</div>
-          </div>
-          <div>
+          <div className="status">
             <div className="label">สถานะ</div>
             <div className="value">{candidate.status}</div>
           </div>
+        </div>
+        <div className="recruiter">
+          <div className="status">
+            <div className="label">ผู้รับผิดชอบ</div>
+            <div className="value">{candidate.recruiter.name}</div>
+          </div>
+          <Rating />
         </div>
       </div>
     )
@@ -248,18 +278,20 @@ class CandidateSelect extends React.Component {
   handleSearch(event) {
     this.setState({filter: event.target.value})
   }
+  onSortChange(event) {
+    this.setState({sortBy: event.target.value})
+  }
   render() {
     console.log(this.filteredAndSortedCandidates())
       return (
         <div className="candidate-select">
           <div className="filter">
             <input type="text" placeholder="ค้นด้วยชื่อ ตำแหน่ง หรือสถานะ" onChange={this.handleSearch.bind(this)}/>
-            <div className="sort">
-              เรียงตาม
-              <button className="button" onClick={() => this.setState({ sortBy: 'status' })}>สถานะ</button>
-              <button className="button" onClick={() => this.setState({ sortBy: 'position' })}>ตำแหน่ง</button>
-              <button className="button" onClick={() => this.setState({ sortBy: 'name' })}>ชื่อ</button>
-            </div>
+            <select className="sort" onChange={this.onSortChange.bind(this)}>
+              <option value="status">สถานะ</option>
+              <option value="position">ตำแหน่ง</option>
+              <option value="name">ชื่อ</option>
+            </select>
           </div>
           <div className="search-results">
             {
