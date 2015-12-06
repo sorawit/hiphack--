@@ -95,15 +95,26 @@
 
   .candidate-view {
     @include display-flex;
-    @include flex-direction(column);
+    @include flex-direction(row);
     @include flex(1);
     height: 100%;
-
     padding: 0 40px 0 20px;
+
+    .candidate-info {
+      height: 100%;
+      @include display-flex;
+      @include flex-direction(column);
+      @include flex(1);
+
+      .tab {
+        @include flex(1);
+      }
+    }
 
     .general-info {
     	@include display-flex;
     	@include flex-direction(row);
+      @include flex(initial);
       padding: 40px 0;
 
       .display-image {
@@ -121,78 +132,89 @@
         padding: 0 20px;
 
         .name h1 {
-          font-size: 36px;
-          margin: 0;
+          font-size: 32px;
+          margin: 10px 0 0;
           font-weight: 600;
         }
-      }
 
-      .recruiter {
-        flex: initial;
-        padding-top: 5px;
-      }
-
-      .status {
-        > div {
-          line-height: 24px;
-        }
-
-        .label {
-          float: left;
-          color: $cl-lighter-font;
-        }
-        .value {
-          float: left;
-          margin-left: 20px;
+        .position {
+          font-size: 20px;
         }
       }
     }
 
     .tab-container {
-      @include display-flex;
-      @include flex-direction(column);
-      @include flex(1);
+      @include flex(initial);
+      width: 180px;
+      padding-top: 40px;
 
       .tab-select {
         @include flex(initial);
         padding-bottom: 15px;
-        border-bottom: $border;
 
         ul {
           li {
-            float: left;
-            padding: 8px 10px;
+            padding: 8px 10px 8px 0;
             margin-left: 3px;
             background-color: transparent;
             @include transition(background-color 300ms);
-            color: $cl-lighter-font;
+            position: relative;
 
-            &.active {
+            i {
+              margin-right: 5px;
+              width: 26px;
+              text-align: center;
+            }
+
+            &.active i {
               color: $cl-accent;
-              background-color: adjust-lightness($cl-accent, 20);
-              border-radius: 5px;
+            }
+
+            &.active:before {
+              content: "";
+              font-family: Ionicons;
+              color: $cl-accent;
               font-size: bold;
+              position: absolute;
+              left: -7px;
             }
 
             &:not(.active):hover {
-              color: $cl-base-font;
-              font-size: bold;
+              font-weight: bold;
               cursor: pointer;
             }
           }
         }
-        .action {
-          padding: 8px 15px;
-          float: right;
-          background: $cl-green;
-          color: #fff;
-          border-radius: 5px;
-          cursor: pointer;
+      }
+
+      .recruiter {
+        margin-bottom: 30px;
+
+        h3 {
+          font-weight: bold;
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
+
+        .display-image {
+          width: 20px;
+          height: 20px;
+          border-radius: 3px;
+          background-position: center;
+          background-size: cover;
+          margin: 0 10px 0 5px;
+          display: inline-block;
+          vertical-align: middle;
         }
       }
 
-      .tab {
-        @include flex(1);
+      .status {
+        padding: 8px 15px;
+        background: $cl-green;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 35px;
       }
     }
   }

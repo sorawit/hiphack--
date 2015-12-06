@@ -11,19 +11,18 @@ class Navbar extends React.Component {
           <Link className="fl-lt logo" to="/company/dashboard">
             Hiphack
           </Link>
-          <div className="fl-lt notification">
-            <i className="ion ion-android-notifications"/>
-            <span className="message">
-              การสัมภาษณ์ครั้งต่อไปใน 3 วัน
-            </span>
-          </div>
-          <div className="fl-rt">
+          <div className="fl-lt links">
             <Link className="link active" to="/company/candidates">
               ผู้สมัครทั้งหมด
             </Link>
             <Link className="link" to="/company/candidates">
               ตารางการสัมภาษณ์
             </Link>
+            <Link className="link" to="/company/candidates">
+              คลังโจทย์
+            </Link>
+          </div>
+          <div className="fl-rt">
             <UserLinks />
           </div>
         </div>

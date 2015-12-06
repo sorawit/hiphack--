@@ -128,6 +128,7 @@ class CandidateViewTabOption extends React.Component {
     var activeClass = this.props.value === this.props.selectedTab ? "active" : ""
     return (
       <li className={"tab-container "+activeClass} onClick={this.onClick.bind(this)}>
+         <i className={this.props.icon ? this.props.icon : ""} />
         {this.props.display}
       </li>
     )
@@ -143,57 +144,62 @@ class CandidateViewTab extends React.Component {
   }
   onTabSelect(tab) {
     this.setState({selectedTab: tab})
+    this.props.onTabSelect(tab);
   }
-  onActionSelect() {
+  onStatusSelect(event) {
 
   }
   render() {
     return (
       <div className="tab-container">
-        <div className="tab-select">
-          <ul>
-            <CandidateViewTabOption value="overview"  display="ภาพรวม"           selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
-            <CandidateViewTabOption value="resume"    display="ประวัติย่อ (Resume)" selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
-            <CandidateViewTabOption value="interview" display="การสัมภาษณ์"        selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
-            <CandidateViewTabOption value="comment"   display="ความคิดเห็น"        selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
-          </ul>
-          <div className="action" onClick={this.onActionSelect.bind(this)}>
-            ดำเนินการ
+        <div className="status" onClick={this.onStatusSelect.bind(this)}>
+          ดำเนินการ
+        </div>
+        <div className="recruiter" onClick={this.onStatusSelect.bind(this)}>
+          <h3>ผู้รับผิดชอบ</h3>
+          <div>
+            <div className="display-image" style={{backgroundImage: 'url('+this.props.candidate.recruiter.display_image+')'}} />
+            {this.props.candidate.recruiter.name}
           </div>
         </div>
-        <div className="tab">
-          {this.state.selectedTab}
+        <div className="tab-select">
+          <ul>
+            <CandidateViewTabOption value="overview"  display="ภาพรวม"           icon="ion ion-ios-home-outline"      selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
+            <CandidateViewTabOption value="resume"    display="ประวัติย่อ (Resume)" icon="ion ion-document"              selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
+            <CandidateViewTabOption value="interview" display="การสัมภาษณ์"        icon="ion ion-code"                  selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
+            <CandidateViewTabOption value="comment"   display="ความคิดเห็น"        icon="ion ion-ios-chatboxes-outline" selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
+          </ul>
         </div>
+        <Rating />
       </div>
     )
   }
 }
 
-class CandidateViewGeneralInfo extends React.Component {
+class CandidateViewInfo extends React.Component {
+  getTab() {
+    return (
+      <div>{this.props.selectedTab}</div>
+    )
+  }
   render() {
     const candidate = this.props.candidate
     const image_style = candidate && { backgroundImage: "url('"+candidate.display_image+"')" }
     return (
-      <div className="general-info">
-        <div className="display-image" style={image_style} />
-        <div className="info">
-          <div className="name">
-            <h1>{candidate.name}</h1>
-          </div>
-          <div className="position">
-            {candidate.position}
-          </div>
-          <div className="status">
-            <div className="label">สถานะ</div>
-            <div className="value">{candidate.status}</div>
+      <div className="candidate-info">
+        <div className="general-info">
+          <div className="display-image" style={image_style} />
+          <div className="info">
+            <div className="name">
+              <h1>{candidate.name}</h1>
+            </div>
+            <div className="position">
+              {candidate.position}
+            </div>
           </div>
         </div>
-        <div className="recruiter">
-          <div className="status">
-            <div className="label">ผู้รับผิดชอบ</div>
-            <div className="value">{candidate.recruiter.name}</div>
-          </div>
-          <Rating />
+        <div className="tab">
+          {this.getTab()}
         </div>
       </div>
     )
@@ -204,7 +210,8 @@ class CandidateView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      candidate: undefined
+      candidate: undefined,
+      selectedTab: 'overview'
     }
   }
   fetchCandidateData() {
@@ -212,15 +219,19 @@ class CandidateView extends React.Component {
       candidate: {
         id: 1,
         name: "ศรัณยู ภูษิต",
-        position: "Swift Developer",
+        position: "Software Developer Intern",
         status: "รอสัมภาษณ์",
         display_image: "https://scontent-lga3-1.xx.fbcdn.net/hphotos-xla1/v/t1.0-9/10460378_1086650394680517_6853281743052289354_n.jpg?oh=ea315d590ac5e339a241859d43b8ac87&oe=56B4C420",
         recruiter: {
           id: 1,
-          name: "มนีรัตน์ อู่เต่าบิน"
+          name: "มนีรัตน์ อู่เต่าบิน",
+          display_image: "https://scontent-lga3-1.xx.fbcdn.net/hphotos-xpt1/v/t1.0-9/65609_539354492801591_1108515227_n.jpg?oh=0b22fbeda4b9b74ae49f23f908eec5ea&oe=571EB5DF"
         }
       }
     })
+  }
+  onTabSelect(tab) {
+    this.setState({selectedTab: tab})
   }
   componentDidMount() {
     this.fetchCandidateData()
@@ -231,8 +242,8 @@ class CandidateView extends React.Component {
       <div className="candidate-view">
         {
           this.state.candidate ?
-          [ <CandidateViewGeneralInfo candidate={this.state.candidate} />,
-            <CandidateViewTab initialTab={initialTab} /> ] :
+          [ <CandidateViewInfo candidate={this.state.candidate} selectedTab={this.state.selectedTab} />,
+            <CandidateViewTab candidate={this.state.candidate} initialTab={initialTab} onTabSelect={this.onTabSelect.bind(this)} /> ] :
           <Loader />
         }
 
