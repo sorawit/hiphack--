@@ -57,6 +57,10 @@
       .candidate-item {
         margin-top: 10px;
         padding: 15px 10px 15px 20px;
+        border-radius: 5px;
+        border: $border;
+        border-color: transparent;
+
         .status {
           margin-bottom: 10px;
           font-size: 16px;
@@ -85,9 +89,17 @@
           margin-top: 3px;
         }
 
-        &.selected {
-          border: $border;
-          border-radius: 5px;
+        &.selected, {
+          border-color: $cl-border;
+        }
+
+        &:not(.selected):hover + &.selected {
+          border: 0;
+        }
+
+        &:not(.selected):hover {
+          border-color: $cl-border;
+          cursor: pointer;
         }
       }
     }
@@ -97,8 +109,9 @@
     @include display-flex;
     @include flex-direction(row);
     @include flex(1);
+    overflow: scroll;
     height: 100%;
-    padding: 0 40px 0 20px;
+    padding: 0 40px 0 25px;
 
     .candidate-info {
       height: 100%;
@@ -109,7 +122,6 @@
 
       .tab {
         @include flex(1);
-        overflow: scroll;
       }
     }
 

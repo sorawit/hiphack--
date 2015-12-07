@@ -60,6 +60,7 @@ class ActivityAdd extends React.Component {
         <div className="body">
           <a className="resume" href={this.props.candidate.resume_url} target="_blank">
             <iframe src={this.props.candidate.resume_url} />
+            <div className="mask" />
             <div className="desc">
               เปิดประวัติย่อในแท็บใหม่ <i className="ion ion-android-open" />
             </div>
@@ -222,7 +223,6 @@ class CandidateView extends React.Component {
             <CandidateViewTab candidate={this.state.candidate} initialTab={initialTab} onTabSelect={this.onTabSelect.bind(this)} /> ] :
           <Loader />
         }
-
       </div>
     )
   }
@@ -231,8 +231,9 @@ class CandidateView extends React.Component {
 class CandidateSelectItem extends React.Component {
   render() {
     var candidate = this.props.candidate
+    var className = "candidate-item" + (this.props.selected ? " selected" : "")
     return (
-      <div className="candidate-item">
+      <div className={className} onClick={this.props.onSelect}>
         <div className="status">
           { candidate.status }
         </div>
@@ -268,6 +269,11 @@ class CandidateSelect extends React.Component {
   onSortChange(event) {
     this.setState({sortBy: event.target.value})
   }
+  onSelectCandidate(candidateId) {
+    console.log(candidateId)
+    this.props.onSelectCandidate(candidateId)
+    this.setState({ selectedId: candidateId })
+  }
   render() {
     return (
       <div className="candidate-select">
@@ -283,7 +289,8 @@ class CandidateSelect extends React.Component {
           {
             this.filteredAndSortedCandidates().map(
               candidate => <CandidateSelectItem candidate={candidate}
-                                                onClick={() => this.props.onSelectCandidate(candidate.id)}/>
+                                                selected={candidate.id === this.props.selectedCandidate}
+                                                onSelect={this.onSelectCandidate.bind(this, candidate.id)} />
             )
           }
         </div>
@@ -376,7 +383,7 @@ class CandidateExplorer extends React.Component {
           position: "Swift Developer",
           status: "รอการตอบรับ"
         }
-      ], selectedCandidate = data[0]
+      ], selectedCandidate = 1
 
       this.setState({
         candidateData: data,
@@ -397,7 +404,9 @@ class CandidateExplorer extends React.Component {
       this.state.candidateData ?
         <div className="candidate-explorer container">
           <CandidateView ref="view" candidate={this.state.selectedCandidate}/>
-          <CandidateSelect ref="select" data={this.state.candidateData} onSelectCandidate={this.onSelectCandidate}/>
+          <CandidateSelect ref="select" data={this.state.candidateData}
+                           onSelectCandidate={this.onSelectCandidate}
+                           selectedCandidate={this.state.selectedCandidate}/>
         </div>
       :
         <div className="container">
