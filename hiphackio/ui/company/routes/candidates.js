@@ -4,117 +4,92 @@ const Loader = require('../components/loader')
 const Rating = require('../components/rating')
 
 const Menubar = require('../components/menubar')
+const StatusTimeline = require('../components/status-timeline')
 
-class CandidateSelectyy extends React.Component {
-  getFilterMap() {
-    const map = { position: {}, status: {} }
-    this.props.data.map((d) => {
-      map.position[d.position] ? map.position[d.position]++ : map.position[d.position] = 1
-      map.status[d.status] ? map.status[d.status]++ : map.status[d.status] = 1
-    })
-    return map
-  }
-  searchFor(keyword) {
-    this.props.getCandidateTable().searchFor(keyword)
-  }
+class ActivityInterview extends React.Component {
   render() {
-    const filterMap = this.getFilterMap()
     return (
-      <div className="candidate-filter">
-        <h3>
-          ตำแหน่งที่มีการสมัคร
-        </h3>
-        <ul>
-          {
-            Object.keys(filterMap.position).map((p) => {
-              return (
-                <li>
-                  <i className="ion ion-android-person" />
-                  <a onClick={this.searchFor.bind(this, p)}>
-                    {p} ({filterMap.position[p]})
-                  </a>
-                </li>
-              )
-            })
-          }
-        </ul>
-        <h3>
-          สถานะของการสมัคร
-        </h3>
-        <ul>
-          {
-            Object.keys(filterMap.status).map((s) => {
-              return (
-                <li>
-                  <i className="ion ion-chatbox-working" />
-                  <a onClick={this.searchFor.bind(this, s)}>
-                    {s} ({filterMap.status[s]})
-                  </a>
-                </li>
-              )
-            })
-          }
-        </ul>
-      </div>
+      <li>
+        <div className="dot" />
+        <div className="header">
+          <b>เริ่มการสัมภาษณ์</b>
+          <span className="date">{this.props.date}</span>
+        </div>
+        <div className="body">
+          <div className="interview">
+            <div className="detail">
+              <div>ผู้สัมภาษณ์</div>
+              <div className="interviewer">
+                {this.props.interview.interviewers}
+              </div>
+            </div>
+            <div className="time">
+              <i className="ion ion-android-stopwatch" />
+              {this.props.interview.time}
+            </div>
+          </div>
+        </div>
+      </li>
     )
   }
 }
 
-class CandidateSelectxx extends React.Component {
-  componentDidMount() {
-    $(React.findDOMNode(this.refs.table)).DataTable({
-      "language": {
-        "lengthMenu": "แสดง _MENU_ คนต่อหน้า",
-        "zeroRecords": "Nothing found - sorry",
-        "info": "หน้า _PAGE_  จาก _PAGES_",
-        "infoEmpty": "No records available",
-        "infoFiltered": "(ผลการค้นหาจากทั้งหมด _MAX_ รายการ)",
-        "search": "",
-        "searchPlaceholder": "ค้นหาผู้สมัคร",
-        "paginate": {
-          "next": "ถัดไป",
-          "previous": "ก่อนหน้า"
-        }
-      }
-    })
-  }
-  searchFor(keyword) {
-    $(React.findDOMNode(this)).find('.dataTables_filter input').val(keyword).trigger('keyup')
-  }
-  getTableBody() {
-    return (
-      <tbody>
-        {this.props.data.map( (d, i) => {
-          return (
-            <tr>
-              <td>
-                <Link to={"/company/candidate/"+d.id}>
-                  {d.name}
-                </Link>
-              </td>
-              <td>{d.position}</td>
-              <td>{d.status}</td>
-            </tr>
-          )
-        })}
-      </tbody>
-    )
-  }
+class ActivityStatusChange extends React.Component {
   render() {
     return (
-      <div className="candidate-table">
-        <div className="search-container">
+      <li>
+        <div className="dot" />
+        <div className="header">
+          {this.props.recruiter.name}เปลี่ยนสถานะเป็น <b>{this.props.status}</b>
+          <span className="date">{this.props.date}</span>
         </div>
-        <table ref="table">
-          <thead>
-            <tr>
-              <th>ชื่อ</th>
-              <th>ตำแหน่ง</th>
-              <th>สถานะ</th>
-            </tr>
-          </thead>
-          {this.getTableBody()}
-        </table>
+      </li>
+    )
+  }
+}
+
+class ActivityAdd extends React.Component {
+  render() {
+    return (
+      <li>
+        <div className="dot" />
+        <div className="header">
+          {this.props.recruiter.name}เพิ่ม <b>{this.props.candidate.name}</b> เข้ามาในระบบ
+          <span className="date">{this.props.date}</span>
+        </div>
+        <div className="body">
+          <a className="resume" href={this.props.candidate.resume_url} target="_blank">
+            <iframe src={this.props.candidate.resume_url} />
+            <div className="desc">
+              เปิดประวัติย่อในแท็บใหม่ <i className="ion ion-android-open" />
+            </div>
+          </a>
+        </div>
+      </li>
+    )
+  }
+}
+
+class ActivityTimeline extends React.Component {
+  render() {
+    return (
+      <ul className="activity-timeline">
+        <ActivityInterview candidate={this.props.candidate} interview={{interviewers: [{name: "แมวน้ำ สำราญรมณ์"}], time: "45 นาที"}} date="10 พ.ย. 58"/>
+        <ActivityStatusChange candidate={this.props.candidate} recruiter={{name: "มนีรัตน์"}} status="รอสัมภาษณ์" date="22 ต.ค. 58"/>
+        <ActivityAdd candidate={this.props.candidate} recruiter={{name: "มนีรัตน์"}} status="รอสัมภาษณ์" date="7 ต.ค. 58"/>
+      </ul>
+    )
+  }
+}
+
+class OverviewTab extends React.Component {
+  render() {
+    return (
+      <div className="tab overview">
+        <h1>สถานะปัจจุบัน</h1>
+        <StatusTimeline />
+        <h1>บันทึกกิจกรรมล่าสุด</h1>
+        <ActivityTimeline candidate={this.props.candidate} />
       </div>
     )
   }
@@ -178,9 +153,11 @@ class CandidateViewTab extends React.Component {
 
 class CandidateViewInfo extends React.Component {
   getTab() {
-    return (
-      <div>{this.props.selectedTab}</div>
-    )
+    if(this.props.selectedTab === 'overview') {
+      return (<OverviewTab candidate={this.props.candidate} />)
+    } else {
+      return (<div className="tab">{this.props.selectedTab}</div>)
+    }
   }
   render() {
     const candidate = this.props.candidate
@@ -198,9 +175,7 @@ class CandidateViewInfo extends React.Component {
             </div>
           </div>
         </div>
-        <div className="tab">
-          {this.getTab()}
-        </div>
+        {this.getTab()}
       </div>
     )
   }
@@ -221,6 +196,7 @@ class CandidateView extends React.Component {
         name: "ศรัณยู ภูษิต",
         position: "Software Developer Intern",
         status: "รอสัมภาษณ์",
+        resume_url: "/public/resumes/gott.pdf",
         display_image: "https://scontent-lga3-1.xx.fbcdn.net/hphotos-xla1/v/t1.0-9/10460378_1086650394680517_6853281743052289354_n.jpg?oh=ea315d590ac5e339a241859d43b8ac87&oe=56B4C420",
         recruiter: {
           id: 1,
@@ -237,7 +213,7 @@ class CandidateView extends React.Component {
     this.fetchCandidateData()
   }
   render() {
-    let initialTab = 'overview'
+    var initialTab = 'overview'
     return (
       <div className="candidate-view">
         {
@@ -254,7 +230,7 @@ class CandidateView extends React.Component {
 
 class CandidateSelectItem extends React.Component {
   render() {
-    let candidate = this.props.candidate
+    var candidate = this.props.candidate
     return (
       <div className="candidate-item">
         <div className="status">
@@ -293,27 +269,26 @@ class CandidateSelect extends React.Component {
     this.setState({sortBy: event.target.value})
   }
   render() {
-    console.log(this.filteredAndSortedCandidates())
-      return (
-        <div className="candidate-select">
-          <div className="filter">
-            <input type="text" placeholder="ค้นด้วยชื่อ ตำแหน่ง หรือสถานะ" onChange={this.handleSearch.bind(this)}/>
-            <select className="sort" onChange={this.onSortChange.bind(this)}>
-              <option value="status">สถานะ</option>
-              <option value="position">ตำแหน่ง</option>
-              <option value="name">ชื่อ</option>
-            </select>
-          </div>
-          <div className="search-results">
-            {
-              this.filteredAndSortedCandidates().map(
-                candidate => <CandidateSelectItem candidate={candidate}
-                                                  onClick={() => this.props.onSelectCandidate(candidate.id)}/>
-              )
-            }
-          </div>
+    return (
+      <div className="candidate-select">
+        <div className="filter">
+          <input type="text" placeholder="ค้นด้วยชื่อ ตำแหน่ง หรือสถานะ" onChange={this.handleSearch.bind(this)}/>
+          <select className="sort" onChange={this.onSortChange.bind(this)}>
+            <option value="status">สถานะ</option>
+            <option value="position">ตำแหน่ง</option>
+            <option value="name">ชื่อ</option>
+          </select>
         </div>
-      )
+        <div className="search-results">
+          {
+            this.filteredAndSortedCandidates().map(
+              candidate => <CandidateSelectItem candidate={candidate}
+                                                onClick={() => this.props.onSelectCandidate(candidate.id)}/>
+            )
+          }
+        </div>
+      </div>
+    )
   }
 }
 

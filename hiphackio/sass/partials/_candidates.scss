@@ -102,12 +102,14 @@
 
     .candidate-info {
       height: 100%;
+      padding-right: 50px;
       @include display-flex;
       @include flex-direction(column);
       @include flex(1);
 
       .tab {
         @include flex(1);
+        overflow: scroll;
       }
     }
 
@@ -216,6 +218,23 @@
         cursor: pointer;
         margin-bottom: 35px;
       }
+    }
+
+    .tab {
+      h1 {
+        font-weight: bold;
+        color: $cl-light-font;
+        font-size: 21px;
+        margin-bottom: 10px;
+      }
+
+      &.overview {
+        .status-timeline,
+        .activity-timeline {
+          margin-bottom: 40px;
+        }
+      }
+
     }
   }
 
