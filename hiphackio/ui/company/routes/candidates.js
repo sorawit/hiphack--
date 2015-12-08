@@ -47,6 +47,7 @@ class CodingInterviewResult extends React.Component {
   }
   componentDidUpdate() {
     Ace.edit('code').destroy()
+    this.refs.code.getDOMNode().innerHTML = this.state.questions[this.state.selectedQuestion].result.code
     var editor = Ace.edit('code')
     editor.getSession().setMode('ace/mode/javascript')
     editor.setTheme('ace/theme/tomorrow_night_bright')
