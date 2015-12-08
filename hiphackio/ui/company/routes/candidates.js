@@ -5,80 +5,101 @@ const Rating = require('../components/rating')
 
 const Menubar = require('../components/menubar')
 const StatusTimeline = require('../components/status-timeline')
+const ActivityTimeline = require('../components/activity-timeline')
 
-class ActivityInterview extends React.Component {
-  render() {
+const Ace = require('brace')
+
+class CodingInterviewResult extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      questions: [
+        {
+          body: 'ม้านิลมังกรมีหางทั้งหมด 9 หาง แต่ละหางมักทะเลาะกันไม่จบสิ้น เพื่อฝึกความสามัคคีสุดสาครจึงให้หางแต่ละตัวไปหาจำนวนเฉพาะที่ไม่ซ้ำกัน และรวมกันได้เท่ากับ 10001 เท่าของตัวที่มีค่าน้อยที่สุดบวกกับ 2 เท่าของตัวที่มีค่ามากที่สุด ขอให้คุณเขียนโปรแกรมช่วยหางม้านิลมัลกรหาจำนวนเหล่านั้นที',
+          result: {
+            time: '23 นาที',
+            code: '/* This is so ez\n' +
+                  ' * You should hire me because ...\n' +
+                  ' * I AM SO FREAKING SMART\n' +
+                  ' * :) */\n\n' +
+                  'console.log("2, 127, 1223, 2789, 5023, 5333, 5653, 5881, 6029")'
+          }
+        },
+        {
+          body: 'ถ้า A แทน 1, B แทน 2 ... Z แทน 26\n     AA แทน 27, AB แทน 28  ...\n     SEXY แทนอะไร',
+          result: {
+            time: '5 นาที',
+            code: '/* Hey recruiters\n' +
+                  ' * ARE YOU FREAKING KIDDING ME? ...\n' +
+                  ' * Let\'s get over with stupid questions \n' +
+                  ' * :/ */\n\n' +
+                  'console.log("12876")'
+          }
+        }
+      ],
+      selectedQuestion: 0
+    }
+  }
+  componentDidMount() {
+    var editor = Ace.edit('code')
+    editor.getSession().setMode('ace/mode/javascript')
+    editor.setTheme('ace/theme/tomorrow_night_bright')
+  }
+  componentDidUpdate() {
+    Ace.edit('code').destroy()
+    var editor = Ace.edit('code')
+    editor.getSession().setMode('ace/mode/javascript')
+    editor.setTheme('ace/theme/tomorrow_night_bright')
+  }
+  getQuestionSelector() {
+    var options = [];
+    for(var i=0; i<this.state.questions.length; i++) {
+      options.push(
+        <div className={"option" + (this.state.selectedQuestion === i ? " selected" : "")}
+             onClick={this.setState.bind(this, {selectedQuestion: i}, () => {})}>{i+1}</div>
+      );
+    }
     return (
-      <li>
-        <div className="dot" />
-        <div className="header">
-          <b>เริ่มการสัมภาษณ์</b>
-          <span className="date">{this.props.date}</span>
+      <div className="question-selector">
+        {options}
+      </div>
+    )
+  }
+  render() {
+    var question = this.state.questions[this.state.selectedQuestion]
+    return (
+      <div className="interview-result coding">
+        <div className="info">
+          <div className="label">ผู้สัมภาษณ์</div>
+          <div className="value">ม้าน้ำ จ้าแสงแรงศักดา, มาดามแมว, จินดามนี ศรีแมงกระพรุนทอง</div>
         </div>
-        <div className="body">
-          <div className="interview">
-            <div className="detail">
-              <div>ผู้สัมภาษณ์</div>
-              <div className="interviewer">
-                {this.props.interview.interviewers}
-              </div>
-            </div>
-            <div className="time">
-              <i className="ion ion-android-stopwatch" />
-              {this.props.interview.time}
-            </div>
-          </div>
+        <div className="info">
+          <div className="label">เวลา</div>
+          <div className="value">9:00 - 11:23 (2:23 ชั่วโมง)</div>
         </div>
-      </li>
+        <div className="questions-container">
+          {this.getQuestionSelector()}
+          <div className="time"><i className="ion ion-android-stopwatch" />{question.result.time}</div>
+          <div className="body">{question.body}</div>
+          <div className="code" id="code" ref="code">{question.result.code}</div>
+        </div>
+      </div>
     )
   }
 }
 
-class ActivityStatusChange extends React.Component {
+class InterviewTab extends React.Component {
   render() {
     return (
-      <li>
-        <div className="dot" />
-        <div className="header">
-          {this.props.recruiter.name}เปลี่ยนสถานะเป็น <b>{this.props.status}</b>
-          <span className="date">{this.props.date}</span>
-        </div>
-      </li>
-    )
-  }
-}
-
-class ActivityAdd extends React.Component {
-  render() {
-    return (
-      <li>
-        <div className="dot" />
-        <div className="header">
-          {this.props.recruiter.name}เพิ่ม <b>{this.props.candidate.name}</b> เข้ามาในระบบ
-          <span className="date">{this.props.date}</span>
-        </div>
-        <div className="body">
-          <a className="resume" href={this.props.candidate.resume_url} target="_blank">
-            <iframe src={this.props.candidate.resume_url} />
-            <div className="mask" />
-            <div className="desc">
-              เปิดประวัติย่อในแท็บใหม่ <i className="ion ion-android-open" />
-            </div>
-          </a>
-        </div>
-      </li>
-    )
-  }
-}
-
-class ActivityTimeline extends React.Component {
-  render() {
-    return (
-      <ul className="activity-timeline">
-        <ActivityInterview candidate={this.props.candidate} interview={{interviewers: [{name: "แมวน้ำ สำราญรมณ์"}], time: "45 นาที"}} date="10 พ.ย. 58"/>
-        <ActivityStatusChange candidate={this.props.candidate} recruiter={{name: "มนีรัตน์"}} status="รอสัมภาษณ์" date="22 ต.ค. 58"/>
-        <ActivityAdd candidate={this.props.candidate} recruiter={{name: "มนีรัตน์"}} status="รอสัมภาษณ์" date="7 ต.ค. 58"/>
-      </ul>
+      <div className="tab interview">
+        <h1>การสัมภาษณ์</h1>
+        <select className="date-select">
+          <option>8 ต.ค. 58</option>
+          <option>1 พ.ย. 58</option>
+          <option>9 พ.ย. 58</option>
+        </select>
+        <CodingInterviewResult />
+      </div>
     )
   }
 }
@@ -156,6 +177,8 @@ class CandidateViewInfo extends React.Component {
   getTab() {
     if(this.props.selectedTab === 'overview') {
       return (<OverviewTab candidate={this.props.candidate} />)
+    } else if(this.props.selectedTab === 'interview') {
+        return (<InterviewTab candidate={this.props.candidate} />)
     } else {
       return (<div className="tab">{this.props.selectedTab}</div>)
     }

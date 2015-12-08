@@ -63,7 +63,7 @@ class Interview extends React.Component {
   render() {
     return (
       <div className="page-container full">
-        <div className="interview">
+        <div className="coding-interview">
           <CodingEnvironment />
           <Question />
         </div>
