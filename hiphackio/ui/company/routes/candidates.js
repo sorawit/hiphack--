@@ -200,6 +200,7 @@ class CommentTab extends React.Component {
         <div className="comment">
           <div className="display-image" style={{backgroundImage: 'url('+comment.user.display_image+')'}} />
           <div className="detail">
+            <div className="user">{comment.user.name}</div>
             <div className="rating"><Rating rating={comment.rating} /></div>
             <div className="body">{comment.body}</div>
           </div>
