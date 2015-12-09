@@ -225,7 +225,7 @@
 
       .status {
         padding: 8px 15px;
-        background: $cl-green;
+        background: $cl-blue;
         color: #fff;
         border-radius: 5px;
         cursor: pointer;
@@ -282,7 +282,7 @@
           background: $cl-panel-background;
           border-top: solid 4px $cl-panel-border;
           padding: 20px;
-          margin-top: 15px;
+          margin: 15px 0 30px;
           border-radius: 5px;
           position: relative;
 
@@ -336,6 +336,76 @@
             }
           }
 
+        }
+
+        .interview-comments {
+          margin-top: 15px;
+        }
+      }
+
+      &.comment {
+        h1 {
+          margin-bottom: 15px;
+        }
+        .comment {
+          .detail {
+            .rating {
+              display: inline-block;
+            }
+            .desc {
+              display: inline-block;
+              margin-left: 10px;
+              color: $cl-lighter-font;
+            }
+          }
+        }
+      }
+
+      .comment {
+        position: relative;
+        margin: 5px 0 25px;
+
+        .display-image {
+          position: absolute;
+          top: 0;
+          left: 0;
+          border-radius: 5px;
+          margin-right: 20px;
+          width: 40px;
+          height: 40px;
+          background-position: center;
+          background-size: cover;
+        }
+        .detail {
+          width: 100%;
+          padding-left: 55px;
+
+          .user {
+            font-weight: bold;
+            color: $cl-lighter-font;
+          }
+          .rating {
+            margin: 4px 0 10px;
+          }
+          .body {
+            @include formal-font;
+            font-size: 15px;
+            line-height: 20px;
+          }
+        }
+        .desc {
+          font-style: italic;
+        }
+        .input {
+          @include formal-font;
+          font-size: 16px;
+          line-height: 21px;
+          width: 100%;
+          max-width: 100%;
+          min-height: 50px;
+          border: $border;
+          border-radius: 7px;
+          padding: 10px;
         }
       }
 

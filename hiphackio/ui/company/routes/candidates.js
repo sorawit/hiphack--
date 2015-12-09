@@ -9,11 +9,102 @@ const ActivityTimeline = require('../components/activity-timeline')
 
 const Ace = require('brace')
 
+class OverviewTab extends React.Component {
+  render() {
+    return (
+      <div className="tab overview">
+        <h1>สถานะปัจจุบัน</h1>
+        <StatusTimeline />
+        <h1>บันทึกกิจกรรมล่าสุด</h1>
+        <ActivityTimeline candidate={this.props.candidate} />
+      </div>
+    )
+  }
+}
+
 class CodingInterviewResult extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      questions: [
+      selectedQuestion: 0
+    }
+  }
+  componentDidMount() {
+    var editor = Ace.edit('code')
+    editor.getSession().setMode('ace/mode/javascript')
+    editor.setTheme('ace/theme/tomorrow_night_bright')
+  }
+  componentDidUpdate() {
+    Ace.edit('code').destroy()
+    this.refs.code.getDOMNode().innerHTML = this.props.questions[this.state.selectedQuestion].result.code
+    var editor = Ace.edit('code')
+    editor.getSession().setMode('ace/mode/javascript')
+    editor.setTheme('ace/theme/tomorrow_night_bright')
+  }
+  getQuestionSelector() {
+    var options = [];
+    for(var i=0; i<this.props.questions.length; i++) {
+      options.push(
+        <div className={"option" + (this.state.selectedQuestion === i ? " selected" : "")}
+             onClick={this.setState.bind(this, {selectedQuestion: i}, () => {})}>{i+1}</div>
+      );
+    }
+    return (
+      <div className="question-selector">
+        {options}
+      </div>
+    )
+  }
+  render() {
+    var question = this.props.questions[this.state.selectedQuestion]
+    return (
+      <div className="interview-result coding">
+        <div className="info">
+          <div className="label">ผู้สัมภาษณ์</div>
+          <div className="value">ม้าน้ำ จ้าแสงแรงศักดา, มาดามแมว, จินดามนี ศรีแมงกระพรุนทอง</div>
+        </div>
+        <div className="info">
+          <div className="label">เวลา</div>
+          <div className="value">9:00 - 11:23 (2:23 ชั่วโมง)</div>
+        </div>
+        <div className="questions-container">
+          {this.getQuestionSelector()}
+          <div className="time"><i className="ion ion-android-stopwatch" />{question.result.time}</div>
+          <div className="body">{question.body}</div>
+          <div className="code" id="code" ref="code">{question.result.code}</div>
+        </div>
+      </div>
+    )
+  }
+}
+
+class InterviewComments extends React.Component {
+  render() {
+    var comments = this.props.comments.map((comment) => {
+      return (
+        <div className="comment">
+          <div className="display-image" style={{backgroundImage: 'url('+comment.user.display_image+')'}} />
+          <div className="detail">
+            <div className="user">{comment.user.name}</div>
+            <div className="rating"><Rating rating={comment.rating} /></div>
+            <div className="body">{comment.body}</div>
+          </div>
+        </div>
+      )
+    })
+    return (
+      <div className="interview-comments">
+        {comments}
+      </div>
+    )
+  }
+}
+
+class InterviewTab extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      code_interview_questions: [
         {
           body: 'ม้านิลมังกรมีหางทั้งหมด 9 หาง แต่ละหางมักทะเลาะกันไม่จบสิ้น เพื่อฝึกความสามัคคีสุดสาครจึงให้หางแต่ละตัวไปหาจำนวนเฉพาะที่ไม่ซ้ำกัน และรวมกันได้เท่ากับ 10001 เท่าของตัวที่มีค่าน้อยที่สุดบวกกับ 2 เท่าของตัวที่มีค่ามากที่สุด ขอให้คุณเขียนโปรแกรมช่วยหางม้านิลมัลกรหาจำนวนเหล่านั้นที',
           result: {
@@ -37,59 +128,29 @@ class CodingInterviewResult extends React.Component {
           }
         }
       ],
-      selectedQuestion: 0
+      comments : [
+        {
+          user: {
+            id: 1,
+            name: "มนีรัตน์ อู่เต่าบิน",
+            display_image: "https://scontent-lga3-1.xx.fbcdn.net/hphotos-xpt1/v/t1.0-9/65609_539354492801591_1108515227_n.jpg?oh=0b22fbeda4b9b74ae49f23f908eec5ea&oe=571EB5DF"
+          },
+          rating: 1,
+          to: "โจทย์ข้อที่ 1",
+          body: "คอมเม้นต์ในโค้ดหยาบคายมาก"
+        },
+        {
+          user: {
+            id: 2,
+            name: "อู่เต่าบิน ตัวจริงมีสี่ขา",
+            display_image: "https://scontent-ord1-1.xx.fbcdn.net/hphotos-xat1/v/t1.0-9/11219068_10156181014475111_7361129537478101803_n.jpg?oh=246fbd68b38babb84f20c6352de62445&oe=571D4E66"
+          },
+          rating: 4,
+          body: "ใช้เวลาทำโจทย์น้อยมาก แถมยังมีความจริงใจ รักในการทำงาน เอาใจไปเลย"
+        }
+      ]
     }
   }
-  componentDidMount() {
-    var editor = Ace.edit('code')
-    editor.getSession().setMode('ace/mode/javascript')
-    editor.setTheme('ace/theme/tomorrow_night_bright')
-  }
-  componentDidUpdate() {
-    Ace.edit('code').destroy()
-    this.refs.code.getDOMNode().innerHTML = this.state.questions[this.state.selectedQuestion].result.code
-    var editor = Ace.edit('code')
-    editor.getSession().setMode('ace/mode/javascript')
-    editor.setTheme('ace/theme/tomorrow_night_bright')
-  }
-  getQuestionSelector() {
-    var options = [];
-    for(var i=0; i<this.state.questions.length; i++) {
-      options.push(
-        <div className={"option" + (this.state.selectedQuestion === i ? " selected" : "")}
-             onClick={this.setState.bind(this, {selectedQuestion: i}, () => {})}>{i+1}</div>
-      );
-    }
-    return (
-      <div className="question-selector">
-        {options}
-      </div>
-    )
-  }
-  render() {
-    var question = this.state.questions[this.state.selectedQuestion]
-    return (
-      <div className="interview-result coding">
-        <div className="info">
-          <div className="label">ผู้สัมภาษณ์</div>
-          <div className="value">ม้าน้ำ จ้าแสงแรงศักดา, มาดามแมว, จินดามนี ศรีแมงกระพรุนทอง</div>
-        </div>
-        <div className="info">
-          <div className="label">เวลา</div>
-          <div className="value">9:00 - 11:23 (2:23 ชั่วโมง)</div>
-        </div>
-        <div className="questions-container">
-          {this.getQuestionSelector()}
-          <div className="time"><i className="ion ion-android-stopwatch" />{question.result.time}</div>
-          <div className="body">{question.body}</div>
-          <div className="code" id="code" ref="code">{question.result.code}</div>
-        </div>
-      </div>
-    )
-  }
-}
-
-class InterviewTab extends React.Component {
   render() {
     return (
       <div className="tab interview">
@@ -99,20 +160,65 @@ class InterviewTab extends React.Component {
           <option>1 พ.ย. 58</option>
           <option>9 พ.ย. 58</option>
         </select>
-        <CodingInterviewResult />
+        <CodingInterviewResult candidate={this.props.candidate} questions={this.state.code_interview_questions}/>
+        <h1>ความเห็น</h1>
+        <InterviewComments candidate={this.props.candidate} comments={this.state.comments}/>
       </div>
     )
   }
 }
 
-class OverviewTab extends React.Component {
+class CommentTab extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      comments : [
+        {
+          user: {
+            id: 1,
+            name: "มนีรัตน์ อู่เต่าบิน",
+            display_image: "https://scontent-lga3-1.xx.fbcdn.net/hphotos-xpt1/v/t1.0-9/65609_539354492801591_1108515227_n.jpg?oh=0b22fbeda4b9b74ae49f23f908eec5ea&oe=571EB5DF"
+          },
+          rating: 5,
+          body: "เป็นมิตรต่อสิ่งแวดล้อมดีมาก น้ำเห็นวันนึงเค้าเดินเก็บขวดน้ำใส่ถุงใหญ่มากๆ หิ้วใส่รถกระบะ ข้างหลังมีกล่อง ลัง ขยะแห้งเต็มไปหมด เค้าต้องเป็นคนดีที่โลกรอแน่ๆจุงเบย"
+        },
+        {
+          user: {
+            id: 2,
+            name: "อู่เต่าบิน ตัวจริงมีสี่ขา",
+            display_image: "https://scontent-ord1-1.xx.fbcdn.net/hphotos-xat1/v/t1.0-9/11219068_10156181014475111_7361129537478101803_n.jpg?oh=246fbd68b38babb84f20c6352de62445&oe=571D4E66"
+          },
+          rating: 3,
+          body: "มีสติดีมาก แม้กระทั่งเวลาเจอเต่าบินได้ก็ยังตกหลุมรักโดยไม่มีเงื่อนไข เสียแค่เราไม่ค่อยชอบเค้าอ่ะ :("
+        }
+      ]
+    }
+  }
   render() {
+    var comments = this.state.comments.map((comment) => {
+      return (
+        <div className="comment">
+          <div className="display-image" style={{backgroundImage: 'url('+comment.user.display_image+')'}} />
+          <div className="detail">
+            <div className="rating"><Rating rating={comment.rating} /></div>
+            <div className="body">{comment.body}</div>
+          </div>
+        </div>
+      )
+    })
+    var userDisplayImage = "https://scontent-lga3-1.xx.fbcdn.net/hphotos-xpt1/v/t1.0-9/65609_539354492801591_1108515227_n.jpg?oh=0b22fbeda4b9b74ae49f23f908eec5ea&oe=571EB5DF"
     return (
-      <div className="tab overview">
-        <h1>สถานะปัจจุบัน</h1>
-        <StatusTimeline />
-        <h1>บันทึกกิจกรรมล่าสุด</h1>
-        <ActivityTimeline candidate={this.props.candidate} />
+      <div className="tab comment">
+        <h1>ความคิดเห็นต่อผู้สมัคร</h1>
+        <div className="comment">
+          <div className="display-image" style={{backgroundImage: 'url('+userDisplayImage+')'}} />
+          <div className="detail">
+            <div className="rating"><Rating editable={true}/></div>
+            <div className="desc">ให้คะแนนผู้สมัคร</div>
+            <textarea rows="3" className="input" placeholder="เพิ่มความเห็น"/>
+          </div>
+        </div>
+        {comments}
       </div>
     )
   }
@@ -168,7 +274,6 @@ class CandidateViewTab extends React.Component {
             <CandidateViewTabOption value="comment"   display="ความคิดเห็น"        icon="ion ion-ios-chatboxes-outline" selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
           </ul>
         </div>
-        <Rating />
       </div>
     )
   }
@@ -180,6 +285,8 @@ class CandidateViewInfo extends React.Component {
       return (<OverviewTab candidate={this.props.candidate} />)
     } else if(this.props.selectedTab === 'interview') {
         return (<InterviewTab candidate={this.props.candidate} />)
+    } else if(this.props.selectedTab === 'comment') {
+        return (<CommentTab candidate={this.props.candidate} />)
     } else {
       return (<div className="tab">{this.props.selectedTab}</div>)
     }
