@@ -281,6 +281,9 @@ class CandidateSelect extends React.Component {
     }
     this.handleSearch = this.handleSearch.bind(this)
   }
+  componentDidMount() {
+    $(this.refs['search-results'].getDOMNode()).perfectScrollbar()
+  }
   filteredAndSortedCandidates() {
     window.x = this.props.data
     return this.props.data.slice(0).filter(
@@ -309,7 +312,7 @@ class CandidateSelect extends React.Component {
             <option value="name">ชื่อ</option>
           </select>
         </div>
-        <div className="search-results">
+        <div className="search-results" ref="search-results">
           {
             this.filteredAndSortedCandidates().map(
               candidate => <CandidateSelectItem candidate={candidate}

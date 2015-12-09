@@ -39,7 +39,8 @@ module.exports = function(grunt) {
           '../hiphackio/ui/vendor/moment.min.js',
           '../hiphackio/ui/vendor/jquery.dataTables.min.js',
           '../hiphackio/ui/vendor/fullcalendar.min.js',
-          '../hiphackio/ui/vendor/fullcalendar.lang.th.js'
+          '../hiphackio/ui/vendor/fullcalendar.lang.th.js',
+          '../hiphackio/ui/vendor/perfect-scrollbar.jquery.min.js',
         ],
         dest: '../hiphackio/public/js/vendor.js',
       },

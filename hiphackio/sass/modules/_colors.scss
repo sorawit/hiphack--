@@ -16,7 +16,7 @@ $cl-light-font: #666 !default;
 $cl-lighter-font: #999 !default;
 $cl-lightest-font: #aaa !default;
 
-$cl-nav-background: transparent !default;
+$cl-nav-background: $cl-page-background !default;
 $cl-nav-font: $cl-lighter-font !default;
 $cl-nav-font-2: $cl-accent !default;
 
