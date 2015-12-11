@@ -130,7 +130,7 @@
     	@include display-flex;
     	@include flex-direction(row);
       @include flex(initial);
-      padding: 40px 0;
+      margin: 40px 0;
 
       .display-image {
         flex: initial;
