@@ -1,9 +1,35 @@
+@include keyframes(side-bounce) {
+  0% {
+  	@include transform( translate(0px, 0) );
+  }
+  50% {
+    @include transform( translate(15px, 0) );
+  }
+  100% {
+    @include transform( translate(0px, 0) );
+  }
+}
+
 .candidates {
   .candidate-explorer {
     @include display-flex;
     @include flex-direction(row);
     height: 100%;
     width: 100%;
+  }
+
+  .candidate-not-found {
+    width: 100%;
+    text-align: right;
+    padding: 100px 0;
+    font-size: 24px;
+    color: $cl-lighter-font;
+    @include animation(side-bounce 1.3s infinite ease-in-out);
+
+    i {
+      margin: 0 0 2px 10px;
+      vertical-align: middle
+    }
   }
 
   .candidate-select {
@@ -62,6 +88,8 @@
         border-radius: 5px;
         border: $border;
         border-color: transparent;
+        display: block;
+        color: $cl-base-font;
 
         .status {
           margin-bottom: 10px;
@@ -174,6 +202,10 @@
             background-color: transparent;
             @include transition(background-color 300ms);
             position: relative;
+
+            a {
+              color: $cl-base-font;
+            }
 
             i {
               margin-right: 5px;

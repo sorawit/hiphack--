@@ -225,33 +225,19 @@ class CommentTab extends React.Component {
   }
 }
 
-class CandidateViewTabOption extends React.Component {
-  onClick() {
-    this.props.onTabSelect(this.props.value)
-  }
-  render() {
-    var activeClass = this.props.value === this.props.selectedTab ? "active" : ""
+class CandidateViewTab extends React.Component {
+  getLinkToTab(tab, text, icon) {
+    var activeClass = (tab === this.props.params.tab ? "active" : "")
     return (
-      <li className={"tab-container "+activeClass} onClick={this.onClick.bind(this)}>
-         <i className={this.props.icon ? this.props.icon : ""} />
-        {this.props.display}
+      <li className={"tab-container "+activeClass}>
+        <Link to={`/company/candidates/${this.props.params.candidateId}/${tab}`}>
+          <i className={icon ? icon : ""} />
+          {text}
+        </Link>
       </li>
     )
   }
-}
-
-class CandidateViewTab extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedTab: this.props.initialTab || 'overview'
-    }
-  }
-  onTabSelect(tab) {
-    this.setState({selectedTab: tab})
-    this.props.onTabSelect(tab);
-  }
-  onStatusSelect(event) {
+  onStatusSelect() {
 
   }
   render() {
@@ -260,7 +246,7 @@ class CandidateViewTab extends React.Component {
         <div className="status" onClick={this.onStatusSelect.bind(this)}>
           ดำเนินการ
         </div>
-        <div className="recruiter" onClick={this.onStatusSelect.bind(this)}>
+        <div className="recruiter">
           <h3>ผู้รับผิดชอบ</h3>
           <div>
             <div className="display-image" style={{backgroundImage: 'url('+this.props.candidate.recruiter.display_image+')'}} />
@@ -269,10 +255,12 @@ class CandidateViewTab extends React.Component {
         </div>
         <div className="tab-select">
           <ul>
-            <CandidateViewTabOption value="overview"  display="ภาพรวม"           icon="ion ion-ios-home-outline"      selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
-            <CandidateViewTabOption value="resume"    display="ประวัติย่อ (Resume)" icon="ion ion-document"              selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
-            <CandidateViewTabOption value="interview" display="การสัมภาษณ์"        icon="ion ion-code"                  selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
-            <CandidateViewTabOption value="comment"   display="ความคิดเห็น"        icon="ion ion-ios-chatboxes-outline" selectedTab={this.state.selectedTab} onTabSelect={this.onTabSelect.bind(this)} />
+            {[
+              this.getLinkToTab("overview","ภาพรวม","ion ion-ios-home-outline"),
+              this.getLinkToTab("resume","ประวัติย่อ (Resume)","ion ion-document"),
+              this.getLinkToTab("interview","การสัมภาษณ์","ion ion-code"),
+              this.getLinkToTab("comment","ความคิดเห็น","ion ion-ios-chatboxes-outline")
+            ]}
           </ul>
         </div>
       </div>
@@ -282,14 +270,14 @@ class CandidateViewTab extends React.Component {
 
 class CandidateViewInfo extends React.Component {
   getTab() {
-    if(this.props.selectedTab === 'overview') {
+    if(this.props.tab === 'overview') {
       return (<OverviewTab candidate={this.props.candidate} />)
-    } else if(this.props.selectedTab === 'interview') {
+    } else if(this.props.tab === 'interview') {
         return (<InterviewTab candidate={this.props.candidate} />)
-    } else if(this.props.selectedTab === 'comment') {
+    } else if(this.props.tab === 'comment') {
         return (<CommentTab candidate={this.props.candidate} />)
     } else {
-      return (<div className="tab">{this.props.selectedTab}</div>)
+      return (<div className="tab">{this.props.tab}</div>)
     }
   }
   render() {
@@ -314,12 +302,24 @@ class CandidateViewInfo extends React.Component {
   }
 }
 
+class CandidateNotFound extends React.Component {
+  render() {
+    return (
+      <div className="candidate-view">
+        <div className="candidate-not-found">
+          กรุณาเลือกผู้สมัคร
+          <i className="ion ion-arrow-right-a" />
+        </div>
+      </div>
+    )
+  }
+}
+
 class CandidateView extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      candidate: undefined,
-      selectedTab: 'overview'
+      candidate: undefined
     }
   }
   fetchCandidateData() {
@@ -339,20 +339,17 @@ class CandidateView extends React.Component {
       }
     })
   }
-  onTabSelect(tab) {
-    this.setState({selectedTab: tab})
-  }
   componentDidMount() {
     this.fetchCandidateData()
   }
   render() {
-    var initialTab = 'overview'
+    var tab = this.props.params.tab || 'overview'
     return (
       <div className="candidate-view">
         {
           this.state.candidate ?
-          [ <CandidateViewInfo candidate={this.state.candidate} selectedTab={this.state.selectedTab} />,
-            <CandidateViewTab candidate={this.state.candidate} initialTab={initialTab} onTabSelect={this.onTabSelect.bind(this)} /> ] :
+          [ <CandidateViewInfo candidate={this.state.candidate} tab={tab} />,
+            <CandidateViewTab candidate={this.state.candidate} params={this.props.params} /> ] :
           <Loader />
         }
       </div>
@@ -365,7 +362,7 @@ class CandidateSelectItem extends React.Component {
     var candidate = this.props.candidate
     var className = "candidate-item" + (this.props.selected ? " selected" : "")
     return (
-      <div className={className} onClick={this.props.onSelect}>
+      <Link to={`/company/candidates/${candidate.id}/overview`} className={className}>
         <div className="status">
           { candidate.status }
         </div>
@@ -375,7 +372,7 @@ class CandidateSelectItem extends React.Component {
         <div className="position">
           { candidate.position }
         </div>
-      </div>
+      </Link>
     )
   }
 }
@@ -404,11 +401,6 @@ class CandidateSelect extends React.Component {
   onSortChange(event) {
     this.setState({sortBy: event.target.value})
   }
-  onSelectCandidate(candidateId) {
-    console.log(candidateId)
-    this.props.onSelectCandidate(candidateId)
-    this.setState({ selectedId: candidateId })
-  }
   render() {
     return (
       <div className="candidate-select">
@@ -424,8 +416,7 @@ class CandidateSelect extends React.Component {
           {
             this.filteredAndSortedCandidates().map(
               candidate => <CandidateSelectItem candidate={candidate}
-                                                selected={candidate.id === this.props.selectedCandidate}
-                                                onSelect={this.onSelectCandidate.bind(this, candidate.id)} />
+                                                selected={candidate.id == this.props.params.candidateId} />
             )
           }
         </div>
@@ -438,10 +429,8 @@ class CandidateExplorer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: [],
-      selectedCandidate: undefined
+      data: []
     }
-    this.onSelectCandidate = this.onSelectCandidate.bind(this)
   }
   fetchCandidateData() {
     setTimeout(function(){
@@ -518,18 +507,12 @@ class CandidateExplorer extends React.Component {
           position: "Swift Developer",
           status: "รอการตอบรับ"
         }
-      ], selectedCandidate = 1
+      ]
 
       this.setState({
-        candidateData: data,
-        selectedCandidate: selectedCandidate
+        candidateData: data
       })
     }.bind(this), 500)
-  }
-  onSelectCandidate(candidate) {
-    this.setState({
-      selectedCandidate: candidate
-    })
   }
   componentDidMount() {
     this.fetchCandidateData()
@@ -538,10 +521,12 @@ class CandidateExplorer extends React.Component {
     return (
       this.state.candidateData ?
         <div className="candidate-explorer container">
-          <CandidateView ref="view" candidate={this.state.selectedCandidate}/>
-          <CandidateSelect ref="select" data={this.state.candidateData}
-                           onSelectCandidate={this.onSelectCandidate}
-                           selectedCandidate={this.state.selectedCandidate}/>
+          {
+            this.props.params.candidateId === undefined ?
+            <CandidateNotFound /> :
+            <CandidateView ref="view" candidate={this.state.selectedCandidate} params={this.props.params}/>
+          }
+          <CandidateSelect ref="select" data={this.state.candidateData} params={this.props.params}/>
         </div>
       :
         <div className="container">
@@ -557,7 +542,7 @@ class Candidates extends React.Component {
   render() {
     return (
       <div className="page-container full candidates">
-        <CandidateExplorer />
+        <CandidateExplorer params={this.props.params || {}}/>
       </div>
     )
   }
